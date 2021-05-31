@@ -1,16 +1,16 @@
 data:
-  path: data/
+  path: /content/ProgrammingInterview/data/
   train_file: train_data.csv
   valid_file: valid_data.csv
-  wavs_location: "../data/"
+  wavs_location: "/content/task_data/"
 model_name: multimodal-multilabel-model.pt
 optimizer:
   type: "Adam"
-  lr: 0.0001
+  lr: 0.0005
   beta1: 0.9
   beta2: 0.999
 
-epochs : 10
+epochs : 50
 batch_size : 100
 positional_encoding_max_len: 5000
 audio_split_samples: 1000
@@ -19,8 +19,6 @@ audio_representation_layers: 2
 n_heads: 8
 pf_dim: 512
 dropout: 0.2
-text_representation_layers: 2
-cross_attention_layers: 2
+text_representation_layers: 1
+cross_attention_layers: 1
 clip : 1
-log_path: "runs/weighted_loss"
-mode: "weighted_loss"

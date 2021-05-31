@@ -9,14 +9,16 @@ from utils import add_to_writer
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from model import Model
-import time
+import time, datetime, os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 # runner loop
-def runner(epochs, model, train_iterator, valid_iterator, optim, writer, clip,save_path,model_name):
+def runner(epochs, model, train_iterator, valid_iterator, optim, writer, config):
+    clip, save_path, model_name = config["clip"], config['data']['path'], config['model_name']
+
     best_valid_loss = float('inf')
 
     for epoch in range(epochs):
@@ -31,7 +33,7 @@ def runner(epochs, model, train_iterator, valid_iterator, optim, writer, clip,sa
 
         if valid_loss < best_valid_loss:
             best_valid_loss = valid_loss
-            torch.save(model.state_dict(), save_path+model_name)
+            torch.save(model.state_dict(), save_path + model_name)
 
         logger.info("-------------------------")
         logger.info(f'Epoch: {epoch + 1:02} | Time: {epoch_mins}m {epoch_secs}s')
@@ -43,7 +45,7 @@ def runner(epochs, model, train_iterator, valid_iterator, optim, writer, clip,sa
         logger.info(
             f'\t Train location accuracy: {train_stats[3]:.3f} \t Valid location accuracy: {valid_stats[3]:.3f}')
 
-        add_to_writer(writer, epoch, train_loss, valid_loss, train_stats, valid_stats)
+        add_to_writer(writer, epoch, train_loss, valid_loss, train_stats, valid_stats, config)
 
 
 # main
@@ -64,7 +66,8 @@ def main():
             logger.info(f'{i} : {config[i]}')
 
     # Setting up Tensorboard
-    writer = SummaryWriter('runs/v1')
+    config['log_path'] = os.path.join(config['log_path'], str(datetime.datetime.now())[:-7])
+    writer = SummaryWriter(config['log_path'])
 
     # Loading data:
     logger.info("Loading data and dataloaders")
@@ -73,31 +76,31 @@ def main():
                                                                  config['data']['valid_file'], \
                                                                  config['data']['wavs_location'])
 
-    collate_fn_ = partial(collate_fn,device=device, text_pad_value=vocab['text_vocab']["<pad>"]\
-                          , audio_pad_value=0,audio_split_samples=config["audio_split_samples"])
+    collate_fn_ = partial(collate_fn, device=device, text_pad_value=vocab['text_vocab']["<pad>"] \
+                          , audio_pad_value=0, audio_split_samples=config["audio_split_samples"])
 
     train_dataloader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True, collate_fn=collate_fn_,
                                   )
     valid_dataloader = DataLoader(valid_dataset, batch_size=2 * config['batch_size'], shuffle=True,
                                   collate_fn=collate_fn_)
 
-
     # Loading model
     model = Model(audio_split_samples=config["audio_split_samples"], \
-                                  hid_dim=config["hid_dim"], \
-                                  audio_representation_layers=config["audio_representation_layers"], \
-                                  n_heads=config["n_heads"], \
-                                  pf_dim=config["pf_dim"], \
-                                  dropout=config["dropout"], \
-                                  max_length=config["positional_encoding_max_len"], \
-                                  len_text_vocab=len(vocab['text_vocab']), \
-                                  text_pad_index=vocab['text_vocab']['<pad>'], \
-                                  text_representation_layers=config["text_representation_layers"], \
-                                  cross_attention_layers=config["cross_attention_layers"], \
-                                  output_dim_1=len(vocab['action_vocab']), \
-                                  output_dim_2=len(vocab['object_vocab']), \
-                                  output_dim_3=len(vocab['position_vocab']), \
-                                  ).to(device)
+                  hid_dim=config["hid_dim"], \
+                  audio_representation_layers=config["audio_representation_layers"], \
+                  n_heads=config["n_heads"], \
+                  pf_dim=config["pf_dim"], \
+                  dropout=config["dropout"], \
+                  max_length=config["positional_encoding_max_len"], \
+                  len_text_vocab=len(vocab['text_vocab']), \
+                  text_pad_index=vocab['text_vocab']['<pad>'], \
+                  text_representation_layers=config["text_representation_layers"], \
+                  cross_attention_layers=config["cross_attention_layers"], \
+                  output_dim_1=len(vocab['action_vocab']), \
+                  output_dim_2=len(vocab['object_vocab']), \
+                  output_dim_3=len(vocab['position_vocab']), \
+                  config=config \
+                  ).to(device)
     logger.info(f'Model loaded')
 
     # Initializing weights in model:
@@ -107,9 +110,10 @@ def main():
     logger.info(f'The model has {count_parameters(model):,} trainable parameters')
 
     # Optimizer
-    optim = torch.optim.Adam(model.parameters(), lr=config['optimizer']['lr'], betas=(config['optimizer']['beta1'],config['optimizer']['beta2']))
+    optim = torch.optim.Adam(model.parameters(), lr=config['optimizer']['lr'],
+                             betas=(config['optimizer']['beta1'], config['optimizer']['beta2']))
 
-    runner(config["epochs"], model, train_dataloader, valid_dataloader, optim, writer, config["clip"],config['data']['path'],config['model_name'])
+    runner(config["epochs"], model, train_dataloader, valid_dataloader, optim, writer, config)
 
     writer.close()
 

@@ -343,7 +343,7 @@ class Model(nn.Module):
     def __init__(self, audio_split_samples, hid_dim, audio_representation_layers, n_heads, pf_dim, dropout, max_length \
                  , len_text_vocab, text_pad_index, text_representation_layers, \
                  cross_attention_layers, \
-                 output_dim_1, output_dim_2, output_dim_3):
+                 output_dim_1, output_dim_2, output_dim_3,config):
         super().__init__()
         self.audio_representations = AudioRepresentations(audio_split_samples, hid_dim, audio_representation_layers,
                                                           n_heads, pf_dim, dropout, max_length)
@@ -357,9 +357,15 @@ class Model(nn.Module):
         self.feed_forward_2 = nn.Linear(hid_dim, output_dim_2)
         self.feed_forward_3 = nn.Linear(hid_dim, output_dim_3)
 
+        self.output_dim_1 = output_dim_1
+        self.output_dim_2 = output_dim_2
+        self.output_dim_3 = output_dim_3
+
         self.loss_1 = nn.CrossEntropyLoss(ignore_index=text_pad_index)
         self.loss_2 = nn.CrossEntropyLoss()
         self.loss_3 = nn.CrossEntropyLoss()
+
+        self.config = config
 
     def forward(self, audio, text, label_1, label_2, label_3):
         # audio : [batch_size, max_audio_len]
@@ -385,7 +391,14 @@ class Model(nn.Module):
         loss_in_object = self.loss_2(output_2, label_2)
         loss_in_position = self.loss_3(output_3, label_3)
 
-        loss = (loss_in_action + loss_in_object + loss_in_position) / 3
+        if 'mode' in self.config and self.config['mode'] == "weighted_loss":
+            # weighted mean based on the total number of labels for actions object and position
+            # since the number of labels for actions and positions are less they are reducing
+            # the loss value to very low numbers.
+            loss = (self.output_dim_1*loss_in_action + self.output_dim_2*loss_in_object + self.output_dim_3*loss_in_position)/\
+                   (self.output_dim_1 + self.output_dim_2 + self.output_dim_3)
+        else:
+            loss = (loss_in_action + loss_in_object + loss_in_position) / 3
 
         predicted_action = torch.argmax(output_1, -1)
         predicted_object = torch.argmax(output_2, -1)

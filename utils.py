@@ -10,6 +10,7 @@ import csv
 import pickle
 import itertools
 from sklearn.metrics import f1_score
+import yaml
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +40,7 @@ def tokenizer(text):
 
 
 def numericalize(inputs, vocab=None, tokenize=False):
+    # This should be 2 seperate functions
     # Create vocabs for train file
     if vocab == None:
         # check unique tokens
@@ -61,8 +63,9 @@ def numericalize(inputs, vocab=None, tokenize=False):
     numericalized_inputs = []
     for i in inputs:
         if tokenize:
-            numericalized_inputs.append([vocab[j] if j in vocab else vocab["<unk>"] for j in
-                                         tokenizer(i)])  # TODO: doing tokenization twice here
+            # Adding sos and eos tokens before and after tokenized string
+            numericalized_inputs.append([vocab["<sos>"]]+[vocab[j] if j in vocab else vocab["<unk>"] for j in
+                                         tokenizer(i)]+[vocab["<eos>"]])  # TODO: doing tokenization twice here
         else:
             numericalized_inputs.append(vocab[i])
 
@@ -164,6 +167,12 @@ def get_Dataset_and_vocabs(path, train_file_name, valid_file_name, wavs_location
     valid_dataset = Dataset(*numericalized_test_data, wavs_location)
 
     Vocab = {'text_vocab': vocabs[0], 'action_vocab': vocabs[1], 'object_vocab': vocabs[2], 'position_vocab': vocabs[3]}
+
+    logger.info(f"Transcript vocab size = {len(Vocab['text_vocab'])}")
+    logger.info(f"Action vocab size = {len(Vocab['action_vocab'])}")
+    logger.info(f"Object vocab size = {len(Vocab['object_vocab'])}")
+    logger.info(f"Position vocab size = {len(Vocab['position_vocab'])}")
+
 
     # dumping vocab
     with open(os.path.join(path, "vocab"), "wb") as f:
@@ -301,7 +310,7 @@ def evaluate(model, valid_iterator):
         valid_iterator), (epoch_f1, epoch_action_accuracy, epoch_object_accuracy, epoch_position_accuracy)
 
 
-def add_to_writer(writer,epoch,train_loss,valid_loss,train_stats,valid_stats):
+def add_to_writer(writer,epoch,train_loss,valid_loss,train_stats,valid_stats,config):
     writer.add_scalar("Train loss", train_loss, epoch)
     writer.add_scalar("Validation loss", valid_loss, epoch)
     writer.add_scalar("Train Action f1", train_stats[0]['action_f1'], epoch)
@@ -316,5 +325,8 @@ def add_to_writer(writer,epoch,train_loss,valid_loss,train_stats,valid_stats):
     writer.add_scalar("Valid action accuracy", valid_stats[1], epoch)
     writer.add_scalar("Valid object accuracy", valid_stats[2], epoch)
     writer.add_scalar("Valid location accuracy", valid_stats[3], epoch)
+
+    with open(config['log_path']+"/config.yaml","w") as file:
+        _ = yaml.dump(config,file)
 
     writer.flush()
