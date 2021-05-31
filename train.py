@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 # runner loop
-def runner(epochs, model, train_iterator, valid_iterator, optim, writer, clip):
+def runner(epochs, model, train_iterator, valid_iterator, optim, writer, clip,save_path,model_name):
     best_valid_loss = float('inf')
 
     for epoch in range(epochs):
@@ -31,8 +31,9 @@ def runner(epochs, model, train_iterator, valid_iterator, optim, writer, clip):
 
         if valid_loss < best_valid_loss:
             best_valid_loss = valid_loss
-            torch.save(model.state_dict(), 'data/multimodal-multilabel-model.pt')
+            torch.save(model.state_dict(), save_path+model_name)
 
+        logger.info("-------------------------")
         logger.info(f'Epoch: {epoch + 1:02} | Time: {epoch_mins}m {epoch_secs}s')
         logger.info(f'\tTrain Loss: {train_loss:.3f}')
         logger.info(f'\t Val. Loss: {valid_loss:.3f}')
@@ -76,13 +77,13 @@ def main():
                           , audio_pad_value=0,audio_split_samples=config["audio_split_samples"])
 
     train_dataloader = DataLoader(train_dataset, batch_size=config['batch_size'], shuffle=True, collate_fn=collate_fn_,
-                                  num_workers=4)
+                                  )
     valid_dataloader = DataLoader(valid_dataset, batch_size=2 * config['batch_size'], shuffle=True,
-                                  collate_fn=collate_fn_, num_workers=4)
+                                  collate_fn=collate_fn_)
 
 
     # Loading model
-    model = nn.DataParallel(Model(audio_split_samples=config["audio_split_samples"], \
+    model = Model(audio_split_samples=config["audio_split_samples"], \
                                   hid_dim=config["hid_dim"], \
                                   audio_representation_layers=config["audio_representation_layers"], \
                                   n_heads=config["n_heads"], \
@@ -96,7 +97,7 @@ def main():
                                   output_dim_1=len(vocab['action_vocab']), \
                                   output_dim_2=len(vocab['object_vocab']), \
                                   output_dim_3=len(vocab['position_vocab']), \
-                                  )).to(device)
+                                  ).to(device)
     logger.info(f'Model loaded')
 
     # Initializing weights in model:
@@ -108,7 +109,7 @@ def main():
     # Optimizer
     optim = torch.optim.Adam(model.parameters(), lr=config['optimizer']['lr'], betas=(config['optimizer']['beta1'],config['optimizer']['beta2']))
 
-    runner(config["epochs"], model, train_dataloader, valid_dataloader, optim, writer, config["clip"])
+    runner(config["epochs"], model, train_dataloader, valid_dataloader, optim, writer, config["clip"],config['data']['path'],config['model_name'])
 
     writer.close()
 

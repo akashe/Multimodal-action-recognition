@@ -4,17 +4,15 @@ import yaml
 import argparse
 import logging
 from functools import partial
-from utils import get_Dataset_and_vocabs_for_eval, collate_fn, evaluate,  count_parameters
+from utils import get_Dataset_and_vocabs_for_eval, collate_fn, evaluate, count_parameters
 from torch.utils.data import DataLoader
 from model import Model
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 def runner(model, valid_iterator):
-
     model.eval()
 
     valid_loss, valid_stats = evaluate(model, valid_iterator)
@@ -24,7 +22,6 @@ def runner(model, valid_iterator):
     logger.info(f'\tValid action accuracy: {valid_stats[1]:.3f}')
     logger.info(f'\t Valid object accuracy: {valid_stats[2]:.3f}')
     logger.info(f'\t Valid location accuracy: {valid_stats[3]:.3f}')
-
 
 
 # main
@@ -46,16 +43,16 @@ def main():
     # Loading data:
     logger.info("Loading data and dataloaders")
     valid_dataset, vocab = get_Dataset_and_vocabs_for_eval(config['data']['path'], \
-                                                                 config['data']['valid_file'], \
-                                                                 config['data']['wavs_location'])
+                                                           config['data']['valid_file'], \
+                                                           config['data']['wavs_location'])
 
-    collate_fn_ = partial(collate_fn, device=device, text_pad_value=vocab['text_vocab']["<pad>"]\
-                          , audio_pad_value=0,audio_split_samples=config["audio_split_samples"])
+    collate_fn_ = partial(collate_fn, device=device, text_pad_value=vocab['text_vocab']["<pad>"] \
+                          , audio_pad_value=0, audio_split_samples=config["audio_split_samples"])
     valid_dataloader = DataLoader(valid_dataset, batch_size=2 * config['batch_size'], shuffle=True,
-                                  collate_fn=collate_fn_, num_workers=4)
+                                  collate_fn=collate_fn_)
 
     # Loading model
-    model = nn.DataParallel(Model(audio_split_samples=config["audio_split_samples"], \
+    model = Model(audio_split_samples=config["audio_split_samples"], \
                                   hid_dim=config["hid_dim"], \
                                   audio_representation_layers=config["audio_representation_layers"], \
                                   n_heads=config["n_heads"], \
@@ -69,18 +66,16 @@ def main():
                                   output_dim_1=len(vocab['action_vocab']), \
                                   output_dim_2=len(vocab['object_vocab']), \
                                   output_dim_3=len(vocab['position_vocab']), \
-                                  )).to(device)
+                                  ).to(device)
 
     # Loading model weights in model:
-    model.load_state_dict(torch.load(config["saved_model"]))
+    model.load_state_dict(torch.load(config['data']['path']+config["model_name"]))
     logger.info(f'Model loaded')
 
     # Number of model parameters
     logger.info(f'The model has {count_parameters(model):,} trainable parameters')
 
     runner(model, valid_dataloader)
-
-
 
 
 if __name__ == "__main__":

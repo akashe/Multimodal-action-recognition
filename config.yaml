@@ -3,7 +3,7 @@ data:
   train_file: train_data.csv
   valid_file: valid_data.csv
   wavs_location: "../data/"
-saved_model: data/multimodal-multilabel-model.pt
+model_name: multimodal-multilabel-model.pt
 optimizer:
   type: "Adam"
   lr: 0.0001
