@@ -290,12 +290,12 @@ def evaluate(model, valid_iterator):
             # Statistics
             epoch_loss += loss.item()
 
-            y_pred.append([valid_result["predicted_action"].tolist(), valid_result["predicted_action"].tolist(),
+            y_pred.append([valid_result["predicted_action"].tolist(), valid_result["predicted_object"].tolist(),
                            valid_result["predicted_location"].tolist()])
             y_true.append([batch[2].tolist(), batch[3].tolist(), batch[4].tolist()])
 
             action_accuracy.append(sum(valid_result["predicted_action"] == batch[2]) / len(batch[2]) * 100)
-            object_accuracy.append(sum(valid_result["predicted_action"] == batch[3]) / len(batch[2]) * 100)
+            object_accuracy.append(sum(valid_result["predicted_object"] == batch[3]) / len(batch[2]) * 100)
             position_accuracy.append(sum(valid_result["predicted_location"] == batch[4]) / len(batch[2]) * 100)
 
     y_pred = list(zip(*y_pred))
@@ -326,7 +326,5 @@ def add_to_writer(writer,epoch,train_loss,valid_loss,train_stats,valid_stats,con
     writer.add_scalar("Valid object accuracy", valid_stats[2], epoch)
     writer.add_scalar("Valid location accuracy", valid_stats[3], epoch)
 
-    with open(config['log_path']+"/config.yaml","w") as file:
-        _ = yaml.dump(config,file)
 
     writer.flush()

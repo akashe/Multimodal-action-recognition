@@ -66,6 +66,7 @@ def main():
                                   output_dim_1=len(vocab['action_vocab']), \
                                   output_dim_2=len(vocab['object_vocab']), \
                                   output_dim_3=len(vocab['position_vocab']), \
+                                config=config
                                   ).to(device)
 
     # Loading model weights in model:

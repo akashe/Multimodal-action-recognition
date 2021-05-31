@@ -1,49 +1,72 @@
 #Multimodal action recognition:
 
 #### Task Definition
-
+Given an audio snippet and a transcript, classify the referred 'action', 'object' and 'position/location' information present in them.
 
 #### Set up virtual environment
-
+To set up a python virtual environment with the required dependencies:
+```
+python3 -m venv multimodal_classification
+source multimodal_classification/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt --use-feature=2020-resolver
 python -m spacy download en
+```
 
-#### Model Variants
+#### Train & eval
 
-#####v1: Full Transformer 
-Referencing https://arxiv.org/pdf/2104.11178v1.pdf you can
-directly encode audio for transformers and not use Mel Spectogram
+To train the model run
+```
+python train.py --config config.yaml
+```
+where, config.yaml consists the location of train. valid scripts, saved_model_location and other hyper-parameters.
 
-Experiment 1:
+To eval
+```
+python eval.py --config config.yaml
+```
+While evaluating, the model can accept csv files with their location mentioned in config file. It won't support single sentence inference because it would need corresponding audio sample also.
+
+#### Tensorboard & logs
+The logs are present in 'logs/'. To visualize using tensorboard:
+
+```
+tensorboard --logdir path_to_tensorboard_logs
+```
+Tensorboard logs are present in config.log_path and the specific mode you are running training the model in
+#### Model
+We use a multimodal model here. The model consists of 3 main components:
+1. Audio self-attention: These layers calculate self attention among the audio signals. We take the original audio len and split in equal parts controlled by the parameter audio_split_samples. So, if the original audio len was 60000 and audio_split_samples = 1000 then we divide the audio into 60 tokens.
+2. Text self-attention: These layers find self attention in the text representations.
+3. Cross- attention: After getting text and audio representation we find cross attention between them and use the results for prediction.
+
+Each layer has the following sequence of operations:
+1. Calculate attention. (Note: In case of cross-attention, we use audio representations as key and value values and use them to find attention over text representations which we set as query)
+2. LayerNorm + residual connection
+3. Pointwise Feedforward.
+4. LayerNorm + residual connection.
+
+We referred https://arxiv.org/pdf/2104.11178v1.pdf and
+directly encode audio for transformers and didn't use Mel Spectogram or other feature extractor.
+
+#### Results
 Result with 
-2 audio_representation_layers
-1 text_representation_layers
-1 cross_attention_layers
+3 audio_representation_layers
+2 text_representation_layers
+2 cross_attention_layers
 
-Epoch: 50 | Time: 0m 23s
-Train Loss: 0.020
-Val. Loss: 0.001
-Train f1: {'action_f1': 0.8819732570377935, 'object_f1': 0.9919541110008183, 'position_f1': 0.9953303464356397} 
- Valid f1: {'action_f1': 0.8747055626826312, 'object_f1': 0.17529257716746305, 'position_f1': 1.0}
-Train action accuracy: 83.120 	 Valid action accuracy: 81.960
-Train object accuracy: 99.198 	 Valid object accuracy: 17.809
-Train location accuracy: 99.534 	 Valid location accuracy: 100.000
-
-tensorboard file v1/base
-
-Experiment 2: 
-Weighted mean based on vocab sizes.
-
-Experiment 3:
-Seperate heads for all three
-#####v2: Using pre-trained audio embedding 
+INFO:__main__:-------------------------
+INFO:__main__:Epoch: 100 | Time: 0m 25s
+INFO:__main__:	Train Loss: 0.048
+INFO:__main__:	 Val. Loss: 0.036
+INFO:__main__:	 Train f1: {'action_f1': 0.8811030446735219, 'object_f1': 0.9731564626949429, 'position_f1': 0.9611628890975684} 
+ Valid f1: {'action_f1': 0.8705353663151849, 'object_f1': 0.9795006251792031, 'position_f1': 0.9592685041392528}
+INFO:__main__:	 Train action accuracy: 83.055 	 Valid action accuracy: 81.532
+INFO:__main__:	 Train object accuracy: 97.358 	 Valid object accuracy: 98.082
+INFO:__main__:	 Train location accuracy: 96.086 	 Valid location accuracy: 95.838
 
 
-#### Train script
 
 
-#### Test script
-
-
-#### Tensorboard
 
 

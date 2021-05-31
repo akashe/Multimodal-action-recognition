@@ -11,7 +11,8 @@ from torch.utils.tensorboard import SummaryWriter
 from model import Model
 import time, datetime, os
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO,filename="logs/train_logs",filemode="w",format='%(name)s - %(levelname)s - %('
+                                                                                      'message)s')
 logger = logging.getLogger(__name__)
 
 
@@ -47,6 +48,9 @@ def runner(epochs, model, train_iterator, valid_iterator, optim, writer, config)
 
         add_to_writer(writer, epoch, train_loss, valid_loss, train_stats, valid_stats, config)
 
+    # dumping config file
+    with open(config['log_path'] + "/config.yaml", "w") as file:
+        _ = yaml.dump(config, file)
 
 # main
 def main():

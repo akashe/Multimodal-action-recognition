@@ -361,7 +361,7 @@ class Model(nn.Module):
         self.output_dim_2 = output_dim_2
         self.output_dim_3 = output_dim_3
 
-        self.loss_1 = nn.CrossEntropyLoss(ignore_index=text_pad_index)
+        self.loss_1 = nn.CrossEntropyLoss()
         self.loss_2 = nn.CrossEntropyLoss()
         self.loss_3 = nn.CrossEntropyLoss()
 
