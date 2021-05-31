@@ -8,6 +8,7 @@ import logging
 from collections import Counter
 import csv
 import pickle
+import itertools
 from sklearn.metrics import f1_score
 
 logger = logging.getLogger(__name__)
@@ -22,18 +23,15 @@ spacy_en = spacy.load('en')
 
 
 def get_f1(y_pred, y_label):
-    # a_pred = a_pred.detach().cpu().tolist() # action predicted
-    # o_pred = o_pred.detach().cpu().tolist() # objects predicted
-    # p_pred = p_pred.detach().cpu().tolist() # positions predicted
-    #
-    # a_label = a_label.detach().cpu().tolist() # true actions
-    # o_label = o_label.detach().cpu().tolist() # true objects
-    # p_label = p_label.detach().cpu().tolist() # true positions
 
-    y_pred = np.array(y_pred)
-    y_true = np.array(y_label)
+    f1 = {"action_f1": f1_score(np.array(list(itertools.chain.from_iterable(y_pred[0]))),
+                                list(itertools.chain.from_iterable(y_label[0])), average="weighted"),
+          "object_f1": f1_score(np.array(list(itertools.chain.from_iterable(y_pred[1]))),
+                                list(itertools.chain.from_iterable(y_label[1])), average="weighted"),
+          "position_f1": f1_score(np.array(list(itertools.chain.from_iterable(y_pred[2]))),
+                                  list(itertools.chain.from_iterable(y_label[2])), average="weighted")}
 
-    return f1_score(y_true=y_true, y_pred=y_pred, average="weighted")
+    return f1
 
 
 def tokenizer(text):
@@ -63,7 +61,7 @@ def numericalize(inputs, vocab=None, tokenize=False):
     numericalized_inputs = []
     for i in inputs:
         if tokenize:
-            numericalized_inputs.append([vocab[j] if i in vocab else vocab["<unk>"] for j in
+            numericalized_inputs.append([vocab[j] if j in vocab else vocab["<unk>"] for j in
                                          tokenizer(i)])  # TODO: doing tokenization twice here
         else:
             numericalized_inputs.append(vocab[i])
@@ -71,7 +69,7 @@ def numericalize(inputs, vocab=None, tokenize=False):
     return numericalized_inputs, vocab
 
 
-def collate_fn(batch, device, text_pad_value, audio_pad_value):
+def collate_fn(batch,device, text_pad_value, audio_pad_value,audio_split_samples):
     """
     We use this function to pad the inputs so that they are of uniform length
     and convert them to tensor
@@ -90,15 +88,18 @@ def collate_fn(batch, device, text_pad_value, audio_pad_value):
         if len(transcript) > max_text_len:
             max_text_len = len(transcript)
 
+    # We have to pad the audio such that the audio length is divisible by audio_split_samples
+    max_audio_len = (int(max_audio_len/audio_split_samples)+1)*audio_split_samples
+
     audio = torch.FloatTensor(batch_size, max_audio_len).fill_(audio_pad_value).to(device)
-    text = torch.IntTensor(batch_size, max_text_len).fill_(text_pad_value).to(device)
-    action = torch.IntTensor(batch_size).fill_(0).to(device)
-    object_ = torch.IntTensor(batch_size).fill_(0).to(device)
-    position = torch.IntTensor(batch_size).fill_(0).to(device)
+    text = torch.LongTensor(batch_size, max_text_len).fill_(text_pad_value).to(device)
+    action = torch.LongTensor(batch_size).fill_(0).to(device)
+    object_ = torch.LongTensor(batch_size).fill_(0).to(device)
+    position = torch.LongTensor(batch_size).fill_(0).to(device)
 
     for i, (audio_clip, transcript, action_taken, object_chosen, position_chosen) in enumerate(batch):
-        audio[i][:len(audio_clip)] = audio_clip
-        text[i][:len(transcript)] = transcript
+        audio[i][:len(audio_clip)] = torch.tensor(audio_clip.tolist())
+        text[i][:len(transcript)] = torch.tensor(transcript)
         action[i] = action_taken
         object_[i] = object_chosen
         position[i] = position_chosen
@@ -156,7 +157,7 @@ def get_Dataset_and_vocabs(path, train_file_name, valid_file_name, wavs_location
             a, vocab = numericalize(j)
             b, _ = numericalize(k, vocab=vocab)
         numericalized_train_data.append(a)
-        numericalized_test_data.append(a)
+        numericalized_test_data.append(b)
         vocabs.append(vocab)
 
     train_dataset = Dataset(*numericalized_train_data, wavs_location)
@@ -174,7 +175,7 @@ def get_Dataset_and_vocabs(path, train_file_name, valid_file_name, wavs_location
 def get_Dataset_and_vocabs_for_eval(path, valid_file_name, wavs_location):
     test_data = load_csv(path, valid_file_name)
 
-    with open(os.path.join(path, "vocab"), "wb") as f:
+    with open(os.path.join(path, "vocab"), "rb") as f:
         Vocab = pickle.load(f)
 
     numericalized_test_data = [test_data[0], numericalize(test_data[1], vocab=Vocab['text_vocab'], tokenize=True)[0],
@@ -222,7 +223,7 @@ def train(model, train_iterator, optim, clip):
 
     for i, batch in enumerate(train_iterator):
         # running batch
-        train_result = model(batch)
+        train_result = model(*batch)
 
         optim.zero_grad()
 
@@ -236,12 +237,12 @@ def train(model, train_iterator, optim, clip):
 
         # Statistics
         epoch_loss += loss.item()
-        y_pred.append([train_result["predicted_action"].tolist(), train_result["predicted_action"].tolist(),
+        y_pred.append([train_result["predicted_action"].tolist(), train_result["predicted_object"].tolist(),
                        train_result["predicted_location"].tolist()])
         y_true.append([batch[2].tolist(), batch[3].tolist(), batch[4].tolist()])
 
         action_accuracy.append(sum(train_result["predicted_action"] == batch[2]) / len(batch[2]) * 100)
-        object_accuracy.append(sum(train_result["predicted_action"] == batch[3]) / len(batch[2]) * 100)
+        object_accuracy.append(sum(train_result["predicted_object"] == batch[3]) / len(batch[2]) * 100)
         position_accuracy.append(sum(train_result["predicted_location"] == batch[4]) / len(batch[2]) * 100)
 
     y_pred = list(zip(*y_pred))
@@ -273,7 +274,7 @@ def evaluate(model, valid_iterator):
     with torch.no_grad():
         for i, batch in enumerate(valid_iterator):
             # running batch
-            valid_result = model(batch)
+            valid_result = model(*batch)
 
             loss = valid_result["loss"]
 
@@ -303,11 +304,17 @@ def evaluate(model, valid_iterator):
 def add_to_writer(writer,epoch,train_loss,valid_loss,train_stats,valid_stats):
     writer.add_scalar("Train loss", train_loss, epoch)
     writer.add_scalar("Validation loss", valid_loss, epoch)
-    writer.add_scalar("Train f1", train_stats[0], epoch)
+    writer.add_scalar("Train Action f1", train_stats[0]['action_f1'], epoch)
+    writer.add_scalar("Train Object f1", train_stats[0]['object_f1'], epoch)
+    writer.add_scalar("Train Position f1", train_stats[0]['position_f1'], epoch)
     writer.add_scalar("Train action accuracy", train_stats[1], epoch)
     writer.add_scalar("Train object accuracy", train_stats[2], epoch)
     writer.add_scalar("Train location accuracy", train_stats[3], epoch)
-    writer.add_scalar("Valid f1", valid_stats[0], epoch)
+    writer.add_scalar("Valid Action f1", valid_stats[0]['action_f1'], epoch)
+    writer.add_scalar("Valid Object f1", valid_stats[0]['object_f1'], epoch)
+    writer.add_scalar("Valid Position f1", valid_stats[0]['position_f1'], epoch)
     writer.add_scalar("Valid action accuracy", valid_stats[1], epoch)
     writer.add_scalar("Valid object accuracy", valid_stats[2], epoch)
     writer.add_scalar("Valid location accuracy", valid_stats[3], epoch)
+
+    writer.flush()

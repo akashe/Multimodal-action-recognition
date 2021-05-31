@@ -168,7 +168,7 @@ class EncodingLayer(nn.Module):
 
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, src, src_mask):
+    def forward(self, src, src_mask=None):
         # src : [batch_size, src_len, hid_dim]
         # src_mask : [batch_size, 1, 1, src_len]
 
@@ -393,4 +393,4 @@ class Model(nn.Module):
 
         return {'loss': loss, 'loss_in_action': loss_in_action, 'loss_in_object': loss_in_object, \
                 'loss_in_position': loss_in_position, 'predicted_action': predicted_action, \
-                'predicted_action': predicted_object, 'predicted_location': predicted_location}
+                'predicted_object': predicted_object, 'predicted_location': predicted_location}
