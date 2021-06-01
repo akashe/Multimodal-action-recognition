@@ -9,11 +9,25 @@ from utils import add_to_writer
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from model import Model
-import time, datetime, os
+import time, datetime, os,sys
 
-logging.basicConfig(level=logging.INFO,filename="logs/train_logs",filemode="w",format='%(name)s - %(levelname)s - %('
-                                                                                      'message)s')
+
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s',
+                              '%m-%d-%Y %H:%M:%S')
+
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.INFO)
+stdout_handler.setFormatter(formatter)
+
+
+file_handler = logging.FileHandler('logs/train_logs.log')
+stdout_handler.setLevel(logging.INFO)
+stdout_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stdout_handler)
 
 
 # runner loop

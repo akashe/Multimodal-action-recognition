@@ -8,8 +8,22 @@ from utils import get_Dataset_and_vocabs_for_eval, collate_fn, evaluate, count_p
 from torch.utils.data import DataLoader
 from model import Model
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO,filename="logs/train_logs",filemode="w",format='%(name)s - %(levelname)s - %('
+                                                                                      'message)s')
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.INFO)
+stdout_handler.setFormatter(formatter)
+
+
+file_handler = logging.FileHandler('logs/eval_logs.log')
+stdout_handler.setLevel(logging.INFO)
+stdout_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stdout_handler)
 
 
 def runner(model, valid_iterator):
