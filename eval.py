@@ -1,24 +1,27 @@
-import torch
-import torch.nn as nn
-import yaml
 import argparse
+import datetime
 import logging
+import os
+import sys
 from functools import partial
-from utils import get_Dataset_and_vocabs_for_eval, collate_fn, evaluate, count_parameters
+
+import torch
+import yaml
 from torch.utils.data import DataLoader
+
 from model import Model
+from utils import get_Dataset_and_vocabs_for_eval, collate_fn, evaluate, count_parameters
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.INFO,filename="logs/train_logs",filemode="w",format='%(name)s - %(levelname)s - %('
-                                                                                      'message)s')
+
 stdout_handler = logging.StreamHandler(sys.stdout)
 stdout_handler.setLevel(logging.INFO)
 stdout_handler.setFormatter(formatter)
 
 
-file_handler = logging.FileHandler('logs/eval_logs.log')
+file_handler = logging.FileHandler('logs/eval_logs_'+str(datetime.datetime.now())[:-7]+'.log')
 stdout_handler.setLevel(logging.INFO)
 stdout_handler.setFormatter(formatter)
 
@@ -84,7 +87,11 @@ def main():
                                   ).to(device)
 
     # Loading model weights in model:
-    model.load_state_dict(torch.load(config['data']['path']+config["model_name"]))
+    if device == 'cpu':
+        model.load_state_dict(torch.load(os.path.join(config['data']['path'],config["model_name"]),map_location=torch.device('cpu')))
+    else:
+        model.load_state_dict(
+            torch.load(os.path.join(config['data']['path'], config["model_name"])))
     logger.info(f'Model loaded')
 
     # Number of model parameters

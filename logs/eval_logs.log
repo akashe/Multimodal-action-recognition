@@ -1,0 +1,11 @@
+available device cuda
+Loading config
+{'data': {'path': '/content/ProgrammingInterview/data', 'train_file': 'train_data.csv', 'valid_file': 'valid_data.csv', 'wavs_location': '/content/task_data/'}, 'model_name': 'multimodal-multilabel-model.pt', 'optimizer': {'type': 'Adam', 'lr': 0.0005, 'beta1': 0.9, 'beta2': 0.999}, 'epochs': 150, 'batch_size': 100, 'positional_encoding_max_len': 5000, 'audio_split_samples': 1000, 'hid_dim': 256, 'audio_representation_layers': 3, 'n_heads': 8, 'pf_dim': 512, 'dropout': 0.2, 'text_representation_layers': 2, 'cross_attention_layers': 2, 'clip': 1, 'log_path': '/content/ProgrammingInterview/runs/weighted_loss', 'mode': 'weighted_loss'}
+Loading data and dataloaders
+Model loaded
+The model has 3,984,152 trainable parameters
+	 Val. Loss: 0.000
+	Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	Valid action accuracy: 100.000
+	 Valid object accuracy: 100.000
+	 Valid location accuracy: 100.000

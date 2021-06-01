@@ -22,7 +22,7 @@ stdout_handler.setLevel(logging.INFO)
 stdout_handler.setFormatter(formatter)
 
 
-file_handler = logging.FileHandler('logs/train_logs.log')
+file_handler = logging.FileHandler('logs/train_logs_'+str(datetime.datetime.now())[:-7]+'.log')
 stdout_handler.setLevel(logging.INFO)
 stdout_handler.setFormatter(formatter)
 
@@ -48,7 +48,7 @@ def runner(epochs, model, train_iterator, valid_iterator, optim, writer, config)
 
         if valid_loss < best_valid_loss:
             best_valid_loss = valid_loss
-            torch.save(model.state_dict(), save_path + model_name)
+            torch.save(model.state_dict(), os.path.join(save_path , model_name))
 
         logger.info("-------------------------")
         logger.info(f'Epoch: {epoch + 1:02} | Time: {epoch_mins}m {epoch_secs}s')

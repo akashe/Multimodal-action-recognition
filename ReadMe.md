@@ -1,4 +1,4 @@
-#Multimodal action recognition:
+# Multimodal action recognition:
 
 #### Task Definition
 Given an audio snippet and a transcript, classify the referred 'action', 'object' and 'position/location' information present in them.
@@ -27,6 +27,8 @@ python eval.py --config config.yaml
 ```
 While evaluating, the model can accept csv files with their location mentioned in config file. It won't support single sentence inference because it would need corresponding audio sample also.
 
+To eval with your own csv file. Copy the file in data folder and update the 'valid_file' name and 'wavs_location' parameters in the config. 'wavs_location' is the location of the wavs folder containing speaker information and there audio samples.
+
 #### Tensorboard & logs
 The logs are present in 'logs/'. To visualize using tensorboard:
 
@@ -36,9 +38,9 @@ tensorboard --logdir path_to_tensorboard_logs
 Tensorboard logs are present in config.log_path and the specific mode you are running training the model in
 #### Model
 We use a multimodal model here. The model consists of 3 main components:
-1. Audio self-attention: These layers calculate self attention among the audio signals. We take the original audio len and split in equal parts controlled by the parameter audio_split_samples. So, if the original audio len was 60000 and audio_split_samples = 1000 then we divide the audio into 60 tokens.
-2. Text self-attention: These layers find self attention in the text representations.
-3. Cross- attention: After getting text and audio representation we find cross attention between them and use the results for prediction.
+1. **Audio self-attention**: These layers calculate self attention among the audio signals. We take the original audio len and split in equal parts controlled by the parameter audio_split_samples. So, if the original audio len was 60000 and audio_split_samples = 1000 then we divide the audio into 60 tokens.
+2. **Text self-attention**: These layers find self attention in the text representations.
+3. **Cross- attention**: After getting text and audio representation we find cross attention between them and use the results for prediction.
 
 Each layer has the following sequence of operations:
 1. Calculate attention. (Note: In case of cross-attention, we use audio representations as key and value values and use them to find attention over text representations which we set as query)
@@ -55,15 +57,14 @@ Result with
 2 text_representation_layers
 2 cross_attention_layers
 
-INFO:__main__:-------------------------
-INFO:__main__:Epoch: 100 | Time: 0m 25s
-INFO:__main__:	Train Loss: 0.048
-INFO:__main__:	 Val. Loss: 0.036
-INFO:__main__:	 Train f1: {'action_f1': 0.8811030446735219, 'object_f1': 0.9731564626949429, 'position_f1': 0.9611628890975684} 
- Valid f1: {'action_f1': 0.8705353663151849, 'object_f1': 0.9795006251792031, 'position_f1': 0.9592685041392528}
-INFO:__main__:	 Train action accuracy: 83.055 	 Valid action accuracy: 81.532
-INFO:__main__:	 Train object accuracy: 97.358 	 Valid object accuracy: 98.082
-INFO:__main__:	 Train location accuracy: 96.086 	 Valid location accuracy: 95.838
+We get an average validation f1 of 1.
+1. 'action_f1': 1.0 and 'action_accuracy' :100 %
+2. 'object_f1': 1.0 and 'object_accuracy' :100 %
+3. 'position_f1': 1.0 and 'position_accuracy' :100 %
+
+check logs/train_logs.log line 933 and can also refer eval_logs.log
+
+
 
 
 

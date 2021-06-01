@@ -1,0 +1,994 @@
+available device cuda
+Loading config
+data : {'path': '/content/ProgrammingInterview/data', 'train_file': 'train_data.csv', 'valid_file': 'valid_data.csv', 'wavs_location': '/content/task_data/'}
+model_name : multimodal-multilabel-model.pt
+optimizer : {'type': 'Adam', 'lr': 0.0005, 'beta1': 0.9, 'beta2': 0.999}
+epochs : 150
+batch_size : 100
+positional_encoding_max_len : 5000
+audio_split_samples : 1000
+hid_dim : 256
+audio_representation_layers : 3
+n_heads : 8
+pf_dim : 512
+dropout : 0.2
+text_representation_layers : 2
+cross_attention_layers : 2
+clip : 1
+log_path : /content/ProgrammingInterview/runs/weighted_loss
+mode : weighted_loss
+Loading data and dataloaders
+Model loaded
+The model has 3,984,152 trainable parameters
+-------------------------
+Epoch: 01 | Time: 0m 26s
+	Train Loss: 1.947
+	 Val. Loss: 1.761
+	 Train f1: {'action_f1': 0.3678112007163077, 'object_f1': 0.362011099800607, 'position_f1': 0.7288016081274252} 
+ Valid f1: {'action_f1': 0.39567790069462316, 'object_f1': 0.4805068226120858, 'position_f1': 0.7515515515515516}
+	 Train action accuracy: 25.256 	 Valid action accuracy: 24.683
+	 Train object accuracy: 27.361 	 Valid object accuracy: 31.703
+	 Train location accuracy: 60.052 	 Valid location accuracy: 60.155
+-------------------------
+Epoch: 02 | Time: 0m 26s
+	Train Loss: 1.739
+	 Val. Loss: 1.629
+	 Train f1: {'action_f1': 0.333306818573432, 'object_f1': 0.4537056709514934, 'position_f1': 0.7629183741009846} 
+ Valid f1: {'action_f1': 0.41725888324873095, 'object_f1': 0.49216981728144016, 'position_f1': 0.7070424220583753}
+	 Train action accuracy: 24.959 	 Valid action accuracy: 26.404
+	 Train object accuracy: 33.395 	 Valid object accuracy: 37.858
+	 Train location accuracy: 61.860 	 Valid location accuracy: 65.710
+-------------------------
+Epoch: 03 | Time: 0m 26s
+	Train Loss: 1.650
+	 Val. Loss: 1.602
+	 Train f1: {'action_f1': 0.3789132407037148, 'object_f1': 0.4843122780434045, 'position_f1': 0.7000525227289303} 
+ Valid f1: {'action_f1': 0.34773767708299, 'object_f1': 0.49216981728144016, 'position_f1': 0.7070424220583753}
+	 Train action accuracy: 25.355 	 Valid action accuracy: 26.385
+	 Train object accuracy: 37.003 	 Valid object accuracy: 37.706
+	 Train location accuracy: 65.148 	 Valid location accuracy: 65.862
+-------------------------
+Epoch: 04 | Time: 0m 26s
+	Train Loss: 1.622
+	 Val. Loss: 1.443
+	 Train f1: {'action_f1': 0.3470854253605232, 'object_f1': 0.5024104563400139, 'position_f1': 0.7014558125812793} 
+ Valid f1: {'action_f1': 0.4329622296075937, 'object_f1': 0.6273215199193631, 'position_f1': 0.7070424220583753}
+	 Train action accuracy: 25.575 	 Valid action accuracy: 29.113
+	 Train object accuracy: 38.266 	 Valid object accuracy: 47.447
+	 Train location accuracy: 65.665 	 Valid location accuracy: 65.819
+-------------------------
+Epoch: 05 | Time: 0m 26s
+	Train Loss: 1.377
+	 Val. Loss: 1.218
+	 Train f1: {'action_f1': 0.44279806368899804, 'object_f1': 0.6216639020601039, 'position_f1': 0.6920154428711663} 
+ Valid f1: {'action_f1': 0.49170506132967773, 'object_f1': 0.6694996020112085, 'position_f1': 0.7070424220583753}
+	 Train action accuracy: 32.002 	 Valid action accuracy: 32.866
+	 Train object accuracy: 48.784 	 Valid object accuracy: 54.568
+	 Train location accuracy: 65.174 	 Valid location accuracy: 65.689
+-------------------------
+Epoch: 06 | Time: 0m 25s
+	Train Loss: 1.160
+	 Val. Loss: 0.999
+	 Train f1: {'action_f1': 0.410023791508518, 'object_f1': 0.6383345356984974, 'position_f1': 0.7402228584768253} 
+ Valid f1: {'action_f1': 0.3895206052931168, 'object_f1': 0.6686941789685985, 'position_f1': 0.7583618422110661}
+	 Train action accuracy: 36.787 	 Valid action accuracy: 33.931
+	 Train object accuracy: 53.732 	 Valid object accuracy: 55.688
+	 Train location accuracy: 68.165 	 Valid location accuracy: 70.418
+-------------------------
+Epoch: 07 | Time: 0m 26s
+	Train Loss: 0.893
+	 Val. Loss: 0.667
+	 Train f1: {'action_f1': 0.49056411985647236, 'object_f1': 0.7282783181164292, 'position_f1': 0.7792886424633473} 
+ Valid f1: {'action_f1': 0.6393453608783473, 'object_f1': 0.8561177384328834, 'position_f1': 0.7940321221564077}
+	 Train action accuracy: 44.491 	 Valid action accuracy: 51.621
+	 Train object accuracy: 69.067 	 Valid object accuracy: 82.407
+	 Train location accuracy: 71.398 	 Valid location accuracy: 73.361
+-------------------------
+Epoch: 08 | Time: 0m 26s
+	Train Loss: 0.646
+	 Val. Loss: 0.490
+	 Train f1: {'action_f1': 0.5725604153792021, 'object_f1': 0.8194126136434128, 'position_f1': 0.8024550364500601} 
+ Valid f1: {'action_f1': 0.6460872527453257, 'object_f1': 0.896923685090691, 'position_f1': 0.8037122844340412}
+	 Train action accuracy: 54.276 	 Valid action accuracy: 57.902
+	 Train object accuracy: 78.934 	 Valid object accuracy: 86.102
+	 Train location accuracy: 75.968 	 Valid location accuracy: 77.207
+-------------------------
+Epoch: 09 | Time: 0m 26s
+	Train Loss: 0.516
+	 Val. Loss: 0.405
+	 Train f1: {'action_f1': 0.6020662008692107, 'object_f1': 0.8635597976765057, 'position_f1': 0.8094989722257623} 
+ Valid f1: {'action_f1': 0.5975864922621511, 'object_f1': 0.9076413862173335, 'position_f1': 0.7711680026347335}
+	 Train action accuracy: 57.384 	 Valid action accuracy: 59.121
+	 Train object accuracy: 83.132 	 Valid object accuracy: 86.855
+	 Train location accuracy: 77.183 	 Valid location accuracy: 75.139
+-------------------------
+Epoch: 10 | Time: 0m 26s
+	Train Loss: 0.440
+	 Val. Loss: 0.352
+	 Train f1: {'action_f1': 0.614080975049031, 'object_f1': 0.8743096783096923, 'position_f1': 0.813157794250552} 
+ Valid f1: {'action_f1': 0.6280814601870244, 'object_f1': 0.924944168582618, 'position_f1': 0.7923972709069839}
+	 Train action accuracy: 59.574 	 Valid action accuracy: 60.794
+	 Train object accuracy: 85.887 	 Valid object accuracy: 90.867
+	 Train location accuracy: 78.028 	 Valid location accuracy: 78.096
+-------------------------
+Epoch: 11 | Time: 0m 26s
+	Train Loss: 0.389
+	 Val. Loss: 0.319
+	 Train f1: {'action_f1': 0.6298320239656482, 'object_f1': 0.8986208555224212, 'position_f1': 0.8113984290482489} 
+ Valid f1: {'action_f1': 0.691170838843144, 'object_f1': 0.9438087277984647, 'position_f1': 0.8439651875726023}
+	 Train action accuracy: 60.945 	 Valid action accuracy: 60.580
+	 Train object accuracy: 88.357 	 Valid object accuracy: 92.533
+	 Train location accuracy: 78.391 	 Valid location accuracy: 77.526
+-------------------------
+Epoch: 12 | Time: 0m 26s
+	Train Loss: 0.347
+	 Val. Loss: 0.315
+	 Train f1: {'action_f1': 0.6312304310074587, 'object_f1': 0.9115500091178438, 'position_f1': 0.8246654066072697} 
+ Valid f1: {'action_f1': 0.6741454843365525, 'object_f1': 0.938549499775893, 'position_f1': 0.8010069801558801}
+	 Train action accuracy: 62.009 	 Valid action accuracy: 59.458
+	 Train object accuracy: 90.158 	 Valid object accuracy: 92.180
+	 Train location accuracy: 78.515 	 Valid location accuracy: 77.495
+-------------------------
+Epoch: 13 | Time: 0m 26s
+	Train Loss: 0.333
+	 Val. Loss: 0.298
+	 Train f1: {'action_f1': 0.6509586265449324, 'object_f1': 0.9161669277964238, 'position_f1': 0.8162459472368502} 
+ Valid f1: {'action_f1': 0.6304788093165186, 'object_f1': 0.9457383141411364, 'position_f1': 0.8436090745356446}
+	 Train action accuracy: 62.341 	 Valid action accuracy: 60.340
+	 Train object accuracy: 90.451 	 Valid object accuracy: 93.213
+	 Train location accuracy: 78.894 	 Valid location accuracy: 78.827
+-------------------------
+Epoch: 14 | Time: 0m 26s
+	Train Loss: 0.321
+	 Val. Loss: 0.294
+	 Train f1: {'action_f1': 0.6495720138189128, 'object_f1': 0.9215404934510923, 'position_f1': 0.8203969281414587} 
+ Valid f1: {'action_f1': 0.6304788093165186, 'object_f1': 0.9401056401245058, 'position_f1': 0.8343735844963134}
+	 Train action accuracy: 62.790 	 Valid action accuracy: 60.383
+	 Train object accuracy: 90.956 	 Valid object accuracy: 92.932
+	 Train location accuracy: 79.137 	 Valid location accuracy: 79.092
+-------------------------
+Epoch: 15 | Time: 0m 26s
+	Train Loss: 0.327
+	 Val. Loss: 0.293
+	 Train f1: {'action_f1': 0.6492631515072249, 'object_f1': 0.9125402477850207, 'position_f1': 0.8194800760637163} 
+ Valid f1: {'action_f1': 0.6529033687935034, 'object_f1': 0.9438087277984647, 'position_f1': 0.8417929829476261}
+	 Train action accuracy: 63.518 	 Valid action accuracy: 62.990
+	 Train object accuracy: 90.543 	 Valid object accuracy: 92.446
+	 Train location accuracy: 79.094 	 Valid location accuracy: 79.789
+-------------------------
+Epoch: 16 | Time: 0m 26s
+	Train Loss: 0.304
+	 Val. Loss: 0.273
+	 Train f1: {'action_f1': 0.6624801307724449, 'object_f1': 0.9340802503619289, 'position_f1': 0.8186430062337782} 
+ Valid f1: {'action_f1': 0.6940619417665961, 'object_f1': 0.9483499286715333, 'position_f1': 0.8376402417954035}
+	 Train action accuracy: 64.911 	 Valid action accuracy: 68.562
+	 Train object accuracy: 92.297 	 Valid object accuracy: 93.838
+	 Train location accuracy: 79.451 	 Valid location accuracy: 79.452
+-------------------------
+Epoch: 17 | Time: 0m 26s
+	Train Loss: 0.281
+	 Val. Loss: 0.235
+	 Train f1: {'action_f1': 0.7344164575024672, 'object_f1': 0.9298107699456537, 'position_f1': 0.8198551687112091} 
+ Valid f1: {'action_f1': 0.8272642071713456, 'object_f1': 0.9592724513367459, 'position_f1': 0.8436012294802743}
+	 Train action accuracy: 71.943 	 Valid action accuracy: 77.414
+	 Train object accuracy: 92.435 	 Valid object accuracy: 94.398
+	 Train location accuracy: 80.223 	 Valid location accuracy: 78.438
+-------------------------
+Epoch: 18 | Time: 0m 26s
+	Train Loss: 0.246
+	 Val. Loss: 0.194
+	 Train f1: {'action_f1': 0.8262704864075854, 'object_f1': 0.9396656081496404, 'position_f1': 0.8271393513746228} 
+ Valid f1: {'action_f1': 0.8378118209175774, 'object_f1': 0.9594861292161826, 'position_f1': 0.8273579726617248}
+	 Train action accuracy: 80.490 	 Valid action accuracy: 83.850
+	 Train object accuracy: 92.995 	 Valid object accuracy: 94.754
+	 Train location accuracy: 80.356 	 Valid location accuracy: 81.313
+-------------------------
+Epoch: 19 | Time: 0m 26s
+	Train Loss: 0.226
+	 Val. Loss: 0.188
+	 Train f1: {'action_f1': 0.8503029613750214, 'object_f1': 0.9358138691602479, 'position_f1': 0.8325575033809137} 
+ Valid f1: {'action_f1': 0.8786547852046264, 'object_f1': 0.9592724513367459, 'position_f1': 0.8466870778492592}
+	 Train action accuracy: 83.969 	 Valid action accuracy: 85.203
+	 Train object accuracy: 93.219 	 Valid object accuracy: 94.463
+	 Train location accuracy: 81.313 	 Valid location accuracy: 81.450
+-------------------------
+Epoch: 20 | Time: 0m 25s
+	Train Loss: 0.215
+	 Val. Loss: 0.171
+	 Train f1: {'action_f1': 0.8550264493283302, 'object_f1': 0.9419697613414142, 'position_f1': 0.8419265845443339} 
+ Valid f1: {'action_f1': 0.8971548723397746, 'object_f1': 0.9638440617301096, 'position_f1': 0.8817756552274284}
+	 Train action accuracy: 85.046 	 Valid action accuracy: 86.674
+	 Train object accuracy: 93.581 	 Valid object accuracy: 95.733
+	 Train location accuracy: 82.735 	 Valid location accuracy: 86.537
+-------------------------
+Epoch: 21 | Time: 0m 26s
+	Train Loss: 0.203
+	 Val. Loss: 0.152
+	 Train f1: {'action_f1': 0.8713859458141696, 'object_f1': 0.9445110969480542, 'position_f1': 0.853280394731118} 
+ Valid f1: {'action_f1': 0.923161761516575, 'object_f1': 0.9746127832780943, 'position_f1': 0.8691789395380232}
+	 Train action accuracy: 86.753 	 Valid action accuracy: 92.401
+	 Train object accuracy: 94.060 	 Valid object accuracy: 97.144
+	 Train location accuracy: 83.740 	 Valid location accuracy: 85.414
+-------------------------
+Epoch: 22 | Time: 0m 26s
+	Train Loss: 0.190
+	 Val. Loss: 0.135
+	 Train f1: {'action_f1': 0.885423263325301, 'object_f1': 0.9495246044520503, 'position_f1': 0.8549212574259554} 
+ Valid f1: {'action_f1': 0.9426796716349659, 'object_f1': 0.9708339668234124, 'position_f1': 0.8895084837593226}
+	 Train action accuracy: 88.490 	 Valid action accuracy: 93.917
+	 Train object accuracy: 94.616 	 Valid object accuracy: 96.476
+	 Train location accuracy: 84.085 	 Valid location accuracy: 87.855
+-------------------------
+Epoch: 23 | Time: 0m 26s
+	Train Loss: 0.172
+	 Val. Loss: 0.111
+	 Train f1: {'action_f1': 0.9188063932899733, 'object_f1': 0.9535184546790493, 'position_f1': 0.8633285136838991} 
+ Valid f1: {'action_f1': 0.9594815636149917, 'object_f1': 0.9743676816461029, 'position_f1': 0.8773500050075054}
+	 Train action accuracy: 91.870 	 Valid action accuracy: 95.947
+	 Train object accuracy: 95.085 	 Valid object accuracy: 97.166
+	 Train location accuracy: 85.063 	 Valid location accuracy: 86.260
+-------------------------
+Epoch: 24 | Time: 0m 25s
+	Train Loss: 0.153
+	 Val. Loss: 0.094
+	 Train f1: {'action_f1': 0.9393337969503424, 'object_f1': 0.9569084965583582, 'position_f1': 0.8691346660320942} 
+ Valid f1: {'action_f1': 0.9787950673837313, 'object_f1': 0.9695989286271519, 'position_f1': 0.9160192827849175}
+	 Train action accuracy: 93.926 	 Valid action accuracy: 97.841
+	 Train object accuracy: 95.547 	 Valid object accuracy: 96.800
+	 Train location accuracy: 85.852 	 Valid location accuracy: 90.980
+-------------------------
+Epoch: 25 | Time: 0m 26s
+	Train Loss: 0.142
+	 Val. Loss: 0.084
+	 Train f1: {'action_f1': 0.9478862109121258, 'object_f1': 0.9575672810584083, 'position_f1': 0.8789505770010259} 
+ Valid f1: {'action_f1': 0.9967971494470421, 'object_f1': 0.9821890725294236, 'position_f1': 0.8988738448939}
+	 Train action accuracy: 94.788 	 Valid action accuracy: 99.666
+	 Train object accuracy: 95.616 	 Valid object accuracy: 97.769
+	 Train location accuracy: 87.093 	 Valid location accuracy: 88.874
+-------------------------
+Epoch: 26 | Time: 0m 26s
+	Train Loss: 0.123
+	 Val. Loss: 0.067
+	 Train f1: {'action_f1': 0.9587687459540669, 'object_f1': 0.9701567771917156, 'position_f1': 0.8810647256652933} 
+ Valid f1: {'action_f1': 0.9923083908595799, 'object_f1': 0.9839805038598723, 'position_f1': 0.9286122041007486}
+	 Train action accuracy: 95.883 	 Valid action accuracy: 99.250
+	 Train object accuracy: 96.728 	 Valid object accuracy: 98.007
+	 Train location accuracy: 87.646 	 Valid location accuracy: 92.588
+-------------------------
+Epoch: 27 | Time: 0m 26s
+	Train Loss: 0.106
+	 Val. Loss: 0.052
+	 Train f1: {'action_f1': 0.9691296927090347, 'object_f1': 0.9698479161888796, 'position_f1': 0.9006287908929876} 
+ Valid f1: {'action_f1': 0.9923083908595799, 'object_f1': 0.9914825602792879, 'position_f1': 0.9589179416347842}
+	 Train action accuracy: 96.918 	 Valid action accuracy: 99.250
+	 Train object accuracy: 96.775 	 Valid object accuracy: 98.728
+	 Train location accuracy: 89.701 	 Valid location accuracy: 95.711
+-------------------------
+Epoch: 28 | Time: 0m 26s
+	Train Loss: 0.099
+	 Val. Loss: 0.045
+	 Train f1: {'action_f1': 0.9720755027254878, 'object_f1': 0.9676018434519142, 'position_f1': 0.9168054572920833} 
+ Valid f1: {'action_f1': 0.9923006410444187, 'object_f1': 0.9880787069375633, 'position_f1': 0.9582888687512618}
+	 Train action accuracy: 97.216 	 Valid action accuracy: 99.250
+	 Train object accuracy: 96.663 	 Valid object accuracy: 98.385
+	 Train location accuracy: 91.555 	 Valid location accuracy: 95.704
+-------------------------
+Epoch: 29 | Time: 0m 26s
+	Train Loss: 0.088
+	 Val. Loss: 0.038
+	 Train f1: {'action_f1': 0.973199326914171, 'object_f1': 0.9720222350550037, 'position_f1': 0.9342491242753309} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9911974724208674, 'position_f1': 0.9545687388339607}
+	 Train action accuracy: 97.323 	 Valid action accuracy: 100.000
+	 Train object accuracy: 97.163 	 Valid object accuracy: 98.719
+	 Train location accuracy: 93.318 	 Valid location accuracy: 95.276
+-------------------------
+Epoch: 30 | Time: 0m 26s
+	Train Loss: 0.077
+	 Val. Loss: 0.029
+	 Train f1: {'action_f1': 0.9755303573319843, 'object_f1': 0.9747060699612579, 'position_f1': 0.9382214825335852} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9914825602792879, 'position_f1': 1.0}
+	 Train action accuracy: 97.560 	 Valid action accuracy: 100.000
+	 Train object accuracy: 97.431 	 Valid object accuracy: 98.728
+	 Train location accuracy: 93.741 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 31 | Time: 0m 26s
+	Train Loss: 0.066
+	 Val. Loss: 0.019
+	 Train f1: {'action_f1': 0.982882004790831, 'object_f1': 0.9767451980834623, 'position_f1': 0.9543116627219692} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9914825602792879, 'position_f1': 1.0}
+	 Train action accuracy: 98.293 	 Valid action accuracy: 100.000
+	 Train object accuracy: 97.629 	 Valid object accuracy: 98.750
+	 Train location accuracy: 95.400 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 32 | Time: 0m 26s
+	Train Loss: 0.067
+	 Val. Loss: 0.021
+	 Train f1: {'action_f1': 0.9821910619813916, 'object_f1': 0.9769428540571036, 'position_f1': 0.9567358152587561} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9911974724208674, 'position_f1': 1.0}
+	 Train action accuracy: 98.220 	 Valid action accuracy: 100.000
+	 Train object accuracy: 97.689 	 Valid object accuracy: 98.697
+	 Train location accuracy: 95.650 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 33 | Time: 0m 26s
+	Train Loss: 0.058
+	 Val. Loss: 0.017
+	 Train f1: {'action_f1': 0.9863389257945788, 'object_f1': 0.9784775551461362, 'position_f1': 0.9627040044465467} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.991976312654632, 'position_f1': 1.0}
+	 Train action accuracy: 98.638 	 Valid action accuracy: 100.000
+	 Train object accuracy: 97.827 	 Valid object accuracy: 98.997
+	 Train location accuracy: 96.254 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 34 | Time: 0m 26s
+	Train Loss: 0.057
+	 Val. Loss: 0.016
+	 Train f1: {'action_f1': 0.984261106442769, 'object_f1': 0.9786625434597678, 'position_f1': 0.9658595415278942} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9968373601311381, 'position_f1': 0.9961618560696217}
+	 Train action accuracy: 98.431 	 Valid action accuracy: 100.000
+	 Train object accuracy: 97.828 	 Valid object accuracy: 99.688
+	 Train location accuracy: 96.577 	 Valid location accuracy: 99.603
+-------------------------
+Epoch: 35 | Time: 0m 26s
+	Train Loss: 0.050
+	 Val. Loss: 0.014
+	 Train f1: {'action_f1': 0.9868577779465675, 'object_f1': 0.979828413923184, 'position_f1': 0.9738303545748158} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9918418656391716, 'position_f1': 1.0}
+	 Train action accuracy: 98.690 	 Valid action accuracy: 100.000
+	 Train object accuracy: 97.965 	 Valid object accuracy: 99.041
+	 Train location accuracy: 97.375 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 36 | Time: 0m 26s
+	Train Loss: 0.049
+	 Val. Loss: 0.015
+	 Train f1: {'action_f1': 0.9857373342893941, 'object_f1': 0.9818451379817382, 'position_f1': 0.9746901693376543} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9918418656391716, 'position_f1': 1.0}
+	 Train action accuracy: 98.573 	 Valid action accuracy: 100.000
+	 Train object accuracy: 98.172 	 Valid object accuracy: 98.997
+	 Train location accuracy: 97.465 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 37 | Time: 0m 26s
+	Train Loss: 0.041
+	 Val. Loss: 0.010
+	 Train f1: {'action_f1': 0.9891902903341054, 'object_f1': 0.9844048884848581, 'position_f1': 0.9779659228565029} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 98.918 	 Valid action accuracy: 100.000
+	 Train object accuracy: 98.414 	 Valid object accuracy: 100.000
+	 Train location accuracy: 97.793 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 38 | Time: 0m 25s
+	Train Loss: 0.045
+	 Val. Loss: 0.010
+	 Train f1: {'action_f1': 0.9879773408575179, 'object_f1': 0.9819585274784662, 'position_f1': 0.9791137573826602} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 98.797 	 Valid action accuracy: 100.000
+	 Train object accuracy: 98.198 	 Valid object accuracy: 100.000
+	 Train location accuracy: 97.905 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 39 | Time: 0m 26s
+	Train Loss: 0.040
+	 Val. Loss: 0.009
+	 Train f1: {'action_f1': 0.9892760327058384, 'object_f1': 0.9845211614836574, 'position_f1': 0.9757746907971675} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9968475970023786, 'position_f1': 0.9958430297679127}
+	 Train action accuracy: 98.927 	 Valid action accuracy: 100.000
+	 Train object accuracy: 98.414 	 Valid object accuracy: 99.666
+	 Train location accuracy: 97.578 	 Valid location accuracy: 99.572
+-------------------------
+Epoch: 40 | Time: 0m 26s
+	Train Loss: 0.034
+	 Val. Loss: 0.008
+	 Train f1: {'action_f1': 0.9901437102278725, 'object_f1': 0.9887283433988727, 'position_f1': 0.9853007457921978} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.017 	 Valid action accuracy: 100.000
+	 Train object accuracy: 98.871 	 Valid object accuracy: 100.000
+	 Train location accuracy: 98.534 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 41 | Time: 0m 26s
+	Train Loss: 0.035
+	 Val. Loss: 0.026
+	 Train f1: {'action_f1': 0.9895340414514726, 'object_f1': 0.9901316619134759, 'position_f1': 0.98269216721732} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9805035654847798, 'position_f1': 0.9955243724784247}
+	 Train action accuracy: 98.952 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.017 	 Valid object accuracy: 97.747
+	 Train location accuracy: 98.276 	 Valid location accuracy: 99.562
+-------------------------
+Epoch: 42 | Time: 0m 26s
+	Train Loss: 0.030
+	 Val. Loss: 0.005
+	 Train f1: {'action_f1': 0.9897090747156182, 'object_f1': 0.9913354050839486, 'position_f1': 0.9822637169058412} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9968437235916389, 'position_f1': 1.0}
+	 Train action accuracy: 98.974 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.125 	 Valid object accuracy: 99.688
+	 Train location accuracy: 98.224 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 43 | Time: 0m 25s
+	Train Loss: 0.027
+	 Val. Loss: 0.002
+	 Train f1: {'action_f1': 0.9896229884358789, 'object_f1': 0.9924804835415704, 'position_f1': 0.9905866502544908} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 98.961 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.246 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.060 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 44 | Time: 0m 25s
+	Train Loss: 0.029
+	 Val. Loss: 0.001
+	 Train f1: {'action_f1': 0.9906636586046947, 'object_f1': 0.9923293918382764, 'position_f1': 0.9824671609055728} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.069 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.233 	 Valid object accuracy: 100.000
+	 Train location accuracy: 98.250 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 45 | Time: 0m 26s
+	Train Loss: 0.018
+	 Val. Loss: 0.002
+	 Train f1: {'action_f1': 0.9940333300342886, 'object_f1': 0.9947298193199321, 'position_f1': 0.9915292298065984} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 0.995837139332308}
+	 Train action accuracy: 99.405 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.470 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.155 	 Valid location accuracy: 99.572
+-------------------------
+Epoch: 46 | Time: 0m 26s
+	Train Loss: 0.023
+	 Val. Loss: 0.004
+	 Train f1: {'action_f1': 0.9921312937132795, 'object_f1': 0.9937717991855579, 'position_f1': 0.9862408795603715} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.216 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.379 	 Valid object accuracy: 100.000
+	 Train location accuracy: 98.629 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 47 | Time: 0m 26s
+	Train Loss: 0.020
+	 Val. Loss: 0.001
+	 Train f1: {'action_f1': 0.9934287848757565, 'object_f1': 0.9942964128547092, 'position_f1': 0.9918749390431159} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.340 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.431 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.190 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 48 | Time: 0m 26s
+	Train Loss: 0.015
+	 Val. Loss: 0.004
+	 Train f1: {'action_f1': 0.9952444319305211, 'object_f1': 0.9962805496713385, 'position_f1': 0.9921375229346862} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 0.9965321608438812, 'position_f1': 1.0}
+	 Train action accuracy: 99.526 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.629 	 Valid object accuracy: 99.656
+	 Train location accuracy: 99.207 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 49 | Time: 0m 26s
+	Train Loss: 0.017
+	 Val. Loss: 0.004
+	 Train f1: {'action_f1': 0.9932541720490126, 'object_f1': 0.9961050557204367, 'position_f1': 0.9913565000295333} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.323 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.608 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.138 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 50 | Time: 0m 25s
+	Train Loss: 0.015
+	 Val. Loss: 0.002
+	 Train f1: {'action_f1': 0.9944657984857586, 'object_f1': 0.9964582315776751, 'position_f1': 0.992838181843516} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.448 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.647 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.284 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 51 | Time: 0m 26s
+	Train Loss: 0.016
+	 Val. Loss: 0.001
+	 Train f1: {'action_f1': 0.9945515228610916, 'object_f1': 0.9959418869904598, 'position_f1': 0.9932548797864347} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.457 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.595 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.323 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 52 | Time: 0m 25s
+	Train Loss: 0.014
+	 Val. Loss: 0.003
+	 Train f1: {'action_f1': 0.9943781140396784, 'object_f1': 0.9970625656131233, 'position_f1': 0.991885401753723} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 0.9961568028984836}
+	 Train action accuracy: 99.440 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.707 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.190 	 Valid location accuracy: 99.625
+-------------------------
+Epoch: 53 | Time: 0m 26s
+	Train Loss: 0.015
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9949855495017486, 'object_f1': 0.9961079366089274, 'position_f1': 0.9939495095379953} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.496 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.612 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.397 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 54 | Time: 0m 26s
+	Train Loss: 0.012
+	 Val. Loss: 0.001
+	 Train f1: {'action_f1': 0.9953310027963288, 'object_f1': 0.9970630004550536, 'position_f1': 0.9930867358186491} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.530 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.707 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.310 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 55 | Time: 0m 25s
+	Train Loss: 0.014
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9961947615529799, 'object_f1': 0.9956788843648988, 'position_f1': 0.9953326286248716} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.621 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.569 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.534 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 56 | Time: 0m 25s
+	Train Loss: 0.015
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9931699169948519, 'object_f1': 0.9966291386514593, 'position_f1': 0.9942111550841866} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.315 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.664 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.422 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 57 | Time: 0m 26s
+	Train Loss: 0.010
+	 Val. Loss: 0.002
+	 Train f1: {'action_f1': 0.9958503019519626, 'object_f1': 0.9970609452743794, 'position_f1': 0.9959348577372555} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.586 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.707 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.595 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 58 | Time: 0m 26s
+	Train Loss: 0.012
+	 Val. Loss: 0.004
+	 Train f1: {'action_f1': 0.9955036333633512, 'object_f1': 0.9974048854987413, 'position_f1': 0.9958480497007318} 
+ Valid f1: {'action_f1': 0.9968181335983344, 'object_f1': 1.0, 'position_f1': 0.9920110482482963}
+	 Train action accuracy: 99.552 	 Valid action accuracy: 99.688
+	 Train object accuracy: 99.741 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.582 	 Valid location accuracy: 99.219
+-------------------------
+Epoch: 59 | Time: 0m 26s
+	Train Loss: 0.012
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9961098147951198, 'object_f1': 0.9971468149792839, 'position_f1': 0.9953291780884203} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.612 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.716 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.534 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 60 | Time: 0m 26s
+	Train Loss: 0.010
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9961095354890158, 'object_f1': 0.9972336398275883, 'position_f1': 0.9949885605576223} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.603 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.715 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.500 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 61 | Time: 0m 26s
+	Train Loss: 0.012
+	 Val. Loss: 0.002
+	 Train f1: {'action_f1': 0.9928227514821326, 'object_f1': 0.9973219416044494, 'position_f1': 0.995502537492487} 
+ Valid f1: {'action_f1': 0.9955030220710187, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.280 	 Valid action accuracy: 99.562
+	 Train object accuracy: 99.733 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.547 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 62 | Time: 0m 26s
+	Train Loss: 0.018
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9936009793856618, 'object_f1': 0.9956758968224924, 'position_f1': 0.9941275185740924} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.362 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.569 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.414 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 63 | Time: 0m 26s
+	Train Loss: 0.008
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9955039016076228, 'object_f1': 0.9980124423028609, 'position_f1': 0.9978381485698461} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.552 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.802 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.780 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 64 | Time: 0m 26s
+	Train Loss: 0.014
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.993515396514562, 'object_f1': 0.9963701464228545, 'position_f1': 0.9960228544217326} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.353 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.638 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.603 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 65 | Time: 0m 25s
+	Train Loss: 0.010
+	 Val. Loss: 0.001
+	 Train f1: {'action_f1': 0.9954177398693386, 'object_f1': 0.9971478872399392, 'position_f1': 0.9974923381812584} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.534 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.711 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.750 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 66 | Time: 0m 26s
+	Train Loss: 0.009
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9980114090804184, 'object_f1': 0.9968867224413391, 'position_f1': 0.9974931336283056} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.802 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.690 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.750 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 67 | Time: 0m 26s
+	Train Loss: 0.010
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.997060582714248, 'object_f1': 0.9965420333024024, 'position_f1': 0.9968865158216392} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.698 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.651 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.690 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 68 | Time: 0m 26s
+	Train Loss: 0.010
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9961084910581876, 'object_f1': 0.9977539821353953, 'position_f1': 0.997146522171071} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.612 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.776 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.716 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 69 | Time: 0m 26s
+	Train Loss: 0.006
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9978382258121775, 'object_f1': 0.9987899261830768, 'position_f1': 0.9981851313015951} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.784 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.879 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.810 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 70 | Time: 0m 26s
+	Train Loss: 0.008
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9975792370702276, 'object_f1': 0.997751847447524, 'position_f1': 0.9975787508845362} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.759 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.776 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.759 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 71 | Time: 0m 25s
+	Train Loss: 0.007
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9977520384928124, 'object_f1': 0.9983574705711444, 'position_f1': 0.9972346284894069} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.776 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.836 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.724 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 72 | Time: 0m 25s
+	Train Loss: 0.010
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9952439090620886, 'object_f1': 0.9970607946647618, 'position_f1': 0.9974054480234391} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.526 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.707 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.741 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 73 | Time: 0m 26s
+	Train Loss: 0.012
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9955036444224705, 'object_f1': 0.9974937142051679, 'position_f1': 0.9977527235732558} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.547 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.750 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.767 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 74 | Time: 0m 26s
+	Train Loss: 0.009
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9961962176617841, 'object_f1': 0.9975777304806249, 'position_f1': 0.9970604034059348} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.621 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.759 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.707 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 75 | Time: 0m 25s
+	Train Loss: 0.007
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9980977823407353, 'object_f1': 0.9984433145936266, 'position_f1': 0.9987031304032259} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.810 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.845 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.871 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 76 | Time: 0m 26s
+	Train Loss: 0.011
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9954159759490936, 'object_f1': 0.9970603854579284, 'position_f1': 0.9975790762590767} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.539 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.702 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.759 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 77 | Time: 0m 26s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.998530179544133, 'object_f1': 0.9994815015115753, 'position_f1': 0.9977523281625033} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.853 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.948 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.776 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 78 | Time: 0m 26s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.998270793671167, 'object_f1': 0.9993088090805492, 'position_f1': 0.9988757408633291} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.828 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.931 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.888 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 79 | Time: 0m 26s
+	Train Loss: 0.006
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9981843923819884, 'object_f1': 0.9982733867135815, 'position_f1': 0.998097700432592} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.819 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.828 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.810 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 80 | Time: 0m 26s
+	Train Loss: 0.006
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9974064660171497, 'object_f1': 0.9984438399685904, 'position_f1': 0.9984430404823207} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.737 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.845 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.845 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 81 | Time: 0m 25s
+	Train Loss: 0.008
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9972331753410099, 'object_f1': 0.9980117362686558, 'position_f1': 0.9980985423595298} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.724 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.802 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.810 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 82 | Time: 0m 26s
+	Train Loss: 0.003
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9992219919153975, 'object_f1': 0.998963078630591, 'position_f1': 0.9987893884507307} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.922 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.897 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.879 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 83 | Time: 0m 25s
+	Train Loss: 0.003
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9991354184408174, 'object_f1': 0.999047872288312, 'position_f1': 0.9983575664864833} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.914 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.905 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.836 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 84 | Time: 0m 26s
+	Train Loss: 0.006
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.998097799154841, 'object_f1': 0.9983551468358816, 'position_f1': 0.9984436906187457} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.806 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.836 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.840 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 85 | Time: 0m 26s
+	Train Loss: 0.008
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9973196257769587, 'object_f1': 0.9974076093894864, 'position_f1': 0.9976654752005033} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.733 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.741 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.767 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 86 | Time: 0m 25s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9977524723832454, 'object_f1': 0.9994816211348658, 'position_f1': 0.999049255772893} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.776 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.948 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.905 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 87 | Time: 0m 25s
+	Train Loss: 0.006
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9975788811434979, 'object_f1': 0.9986165500067213, 'position_f1': 0.9974925581720521} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.759 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.862 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.750 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 88 | Time: 0m 26s
+	Train Loss: 0.011
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9958499283818422, 'object_f1': 0.9969737936743331, 'position_f1': 0.9980966897571423} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.586 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.698 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.806 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 89 | Time: 0m 25s
+	Train Loss: 0.007
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9958499885360079, 'object_f1': 0.999221917046246, 'position_f1': 0.9979251031301851} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.586 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.918 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.793 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 90 | Time: 0m 26s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9987894145648255, 'object_f1': 0.9986175284564022, 'position_f1': 0.998616902866027} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.879 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.862 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.862 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 91 | Time: 0m 25s
+	Train Loss: 0.005
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9982707443800283, 'object_f1': 0.9986167046847929, 'position_f1': 0.9990485623691976} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.828 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.862 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.905 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 92 | Time: 0m 26s
+	Train Loss: 0.007
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9976658189731062, 'object_f1': 0.998357855432541, 'position_f1': 0.9990490213855802} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.767 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.836 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.905 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 93 | Time: 0m 25s
+	Train Loss: 0.005
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9980113790960491, 'object_f1': 0.9988757543090726, 'position_f1': 0.9980113110436171} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.802 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.888 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.797 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 94 | Time: 0m 26s
+	Train Loss: 0.006
+	 Val. Loss: 0.002
+	 Train f1: {'action_f1': 0.9973196028097521, 'object_f1': 0.9987899315744296, 'position_f1': 0.9977509395944518} 
+ Valid f1: {'action_f1': 0.9951985254340431, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.733 	 Valid action accuracy: 99.510
+	 Train object accuracy: 99.879 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.776 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 95 | Time: 0m 26s
+	Train Loss: 0.005
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9971467792051596, 'object_f1': 0.9984440461944822, 'position_f1': 0.9989622103314967} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.716 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.845 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.897 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 96 | Time: 0m 25s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9978384180823623, 'object_f1': 0.9990486082410125, 'position_f1': 0.9993948450386958} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.784 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.905 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.940 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 97 | Time: 0m 26s
+	Train Loss: 0.002
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9993083564854276, 'object_f1': 0.9994809287046308, 'position_f1': 0.9987029523464465} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.931 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.948 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.871 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 98 | Time: 0m 25s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9987895880404825, 'object_f1': 0.99922163245184, 'position_f1': 0.9991354032293512} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.879 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.922 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.914 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 99 | Time: 0m 26s
+	Train Loss: 0.007
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.996800645436741, 'object_f1': 0.9983568078677643, 'position_f1': 0.9987895509942251} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.681 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.836 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.879 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 100 | Time: 0m 27s
+	Train Loss: 0.006
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9973198367151112, 'object_f1': 0.9985293772641309, 'position_f1': 0.9982716293031246} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.733 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.849 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.828 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 101 | Time: 0m 28s
+	Train Loss: 0.005
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9983573579929077, 'object_f1': 0.9986166423701391, 'position_f1': 0.9988761158432422} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.836 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.862 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.888 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 102 | Time: 0m 27s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9980113326043234, 'object_f1': 0.9991357045321104, 'position_f1': 0.9992218802666848} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.802 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.914 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.922 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 103 | Time: 0m 26s
+	Train Loss: 0.004
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.998616545993903, 'object_f1': 0.9987894616273865, 'position_f1': 0.9988762917858984} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.862 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.879 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.888 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 104 | Time: 0m 26s
+	Train Loss: 0.003
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9988761170473615, 'object_f1': 0.9993946814595097, 'position_f1': 0.9991350299978762} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.888 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.940 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.914 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 105 | Time: 0m 26s
+	Train Loss: 0.003
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9987031485646377, 'object_f1': 0.9989626317826228, 'position_f1': 0.9993947419945747} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.866 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.897 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.940 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 106 | Time: 0m 26s
+	Train Loss: 0.005
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9976663464675734, 'object_f1': 0.9989626887390811, 'position_f1': 0.9994812621696345} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.767 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.897 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.948 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 107 | Time: 0m 26s
+	Train Loss: 0.007
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9981843916294166, 'object_f1': 0.9979248142021334, 'position_f1': 0.9990485810764683} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.819 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.793 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.905 	 Valid location accuracy: 100.000
+-------------------------
+Epoch: 108 | Time: 0m 26s
+	Train Loss: 0.006
+	 Val. Loss: 0.000
+	 Train f1: {'action_f1': 0.9978384875306954, 'object_f1': 0.9984435823506908, 'position_f1': 0.9990488955687765} 
+ Valid f1: {'action_f1': 1.0, 'object_f1': 1.0, 'position_f1': 1.0}
+	 Train action accuracy: 99.784 	 Valid action accuracy: 100.000
+	 Train object accuracy: 99.845 	 Valid object accuracy: 100.000
+	 Train location accuracy: 99.905 	 Valid location accuracy: 100.000
