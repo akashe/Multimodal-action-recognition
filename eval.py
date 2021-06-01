@@ -55,7 +55,8 @@ def main():
     logger.info("Loading config")
     with open(args.config) as file:
         config = yaml.safe_load(file)
-        logger.info(config)
+        for i in config:
+            logger.info(f'{i} : {config[i]}')
 
     # Loading data:
     logger.info("Loading data and dataloaders")
@@ -87,7 +88,7 @@ def main():
                                   ).to(device)
 
     # Loading model weights in model:
-    if device == 'cpu':
+    if device.type == 'cpu':
         model.load_state_dict(torch.load(os.path.join(config['data']['path'],config["model_name"]),map_location=torch.device('cpu')))
     else:
         model.load_state_dict(

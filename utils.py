@@ -15,7 +15,7 @@ import yaml
 logger = logging.getLogger(__name__)
 
 logger.info("----Loading Spacy----")
-spacy_en = spacy.load('en')
+spacy_en = spacy.load('en_core_web_sm')
 
 
 # Calculate F1: use scikit learn and use weighted and use
@@ -123,7 +123,7 @@ class Dataset:
         return len(self.text)
 
     def __getitem__(self, item):
-        _, wav = wavfile.read(self.wavs_location + self.audio[item])
+        _, wav = wavfile.read(os.path.join(self.wavs_location,self.audio[item]))
         return wav, self.text[item], self.action[item], self.object[item], self.position[item]
 
 

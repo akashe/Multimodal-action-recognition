@@ -15,6 +15,8 @@ python -m spacy download en
 
 #### Train & eval
 
+Set the location of downloaded wav files in 'wavs_location' in config.yaml. You can also set location of custom train and eval files in config.yaml.
+
 To train the model run
 ```
 python train.py --config config.yaml
@@ -27,15 +29,18 @@ python eval.py --config config.yaml
 ```
 While evaluating, the model can accept csv files with their location mentioned in config file. It won't support single sentence inference because it would need corresponding audio sample also.
 
-To eval with your own csv file. Copy the file in data folder and update the 'valid_file' name and 'wavs_location' parameters in the config. 'wavs_location' is the location of the wavs folder containing speaker information and there audio samples.
+To eval with your own csv file. Copy the file in data folder and update the 'valid_file' name parameter in the config. 
 
 #### Tensorboard & logs
-The logs are present in 'logs/'. To visualize using tensorboard:
+The logs are present in 'logs/'. 
+
+To visualize using tensorboard use event files in 'runs/'. The sub-folders in the 'runs/' folder are the experiment name which you set in config as 'log_path'
 
 ```
 tensorboard --logdir path_to_tensorboard_logs
 ```
 Tensorboard logs are present in config.log_path and the specific mode you are running training the model in
+
 #### Model
 We use a multimodal model here. The model consists of 3 main components:
 1. **Audio self-attention**: These layers calculate self attention among the audio signals. We take the original audio len and split in equal parts controlled by the parameter audio_split_samples. So, if the original audio len was 60000 and audio_split_samples = 1000 then we divide the audio into 60 tokens.
